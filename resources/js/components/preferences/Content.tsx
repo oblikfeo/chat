@@ -44,14 +44,14 @@ export default function Content() {
   return (
     <div className="order-1 flex flex-1 shrink-0 flex-col gap-2 sm:order-2 sm:flex sm:w-[320px] sm:flex-initial sm:border-l sm:border-secondary lg:w-[360px]">
       <div className="flex items-center justify-between px-2 pt-2 sm:pb-0">
-        <h3 className="text-2xl font-semibold">Preferences</h3>
+        <h3 className="text-2xl font-semibold">Настройки</h3>
       </div>
 
-      <div className="flex h-full max-h-[calc(100vh_-_106px)] flex-col gap-2 overflow-x-auto p-2">
+      <div className="flex h-full max-h-[calc(100dvh_-_106px_-_env(safe-area-inset-bottom,0px)_-_env(safe-area-inset-top,0px))] flex-col gap-2 overflow-x-auto p-2 pb-[max(0.5rem,env(safe-area-inset-bottom,0px))]">
         <div className="flex justify-between">
           <div className="flex items-center gap-2 text-sm">
             <BsCircleHalf />
-            Theme
+            Тема
           </div>
           <Dropdown>
             <Dropdown.Trigger>
@@ -63,13 +63,13 @@ export default function Content() {
 
             <Dropdown.Content>
               <Dropdown.Button onClick={() => setTheme("system")}>
-                System
+                Системная
               </Dropdown.Button>
               <Dropdown.Button onClick={() => setTheme("dark")}>
-                Dark
+                Темная
               </Dropdown.Button>
               <Dropdown.Button onClick={() => setTheme("light")}>
-                Light
+                Светлая
               </Dropdown.Button>
             </Dropdown.Content>
           </Dropdown>
@@ -78,7 +78,7 @@ export default function Content() {
         <div className="flex justify-between">
           <div className="flex items-center gap-2 text-sm">
             <BsAppIndicator />
-            Active Status
+            Статус активности
           </div>
 
           <Switch
@@ -89,7 +89,7 @@ export default function Content() {
               auth.active_status ? "bg-primary" : "bg-secondary",
             )}
           >
-            <span className="sr-only">Enable active status</span>
+            <span className="sr-only">Включить статус активности</span>
             <span
               className={`${
                 auth.active_status ? "translate-x-6" : "translate-x-1"
@@ -120,7 +120,7 @@ export default function Content() {
           >
             <div className="flex items-center gap-2 text-sm">
               <BsPersonCircle />
-              Update profile
+              Обновить профиль
               <BsChevronRight className="ml-auto" />
             </div>
           </button>
@@ -139,7 +139,7 @@ export default function Content() {
           >
             <div className="flex items-center gap-2 text-sm">
               <BsKey />
-              Update password
+              Изменить пароль
               <BsChevronRight className="ml-auto" />
             </div>
           </button>
@@ -158,7 +158,7 @@ export default function Content() {
           >
             <div className="flex items-center gap-2 text-sm">
               <BsBan />
-              Delete Account
+              Удалить аккаунт
               <BsChevronRight className="ml-auto" />
             </div>
           </button>
@@ -171,7 +171,7 @@ export default function Content() {
           className="btn btn-secondary flex items-center gap-2"
         >
           <BsBoxArrowRight />
-          Log out
+          Выйти
           <BsChevronRight className="ml-auto" />
         </Link>
       </div>

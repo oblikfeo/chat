@@ -1,7 +1,7 @@
 {
-  "name": "Messenger",
-  "short_name": "Messenger",
-  "description": "Messenger",
+  "name": "Мессенджер",
+  "short_name": "Мессенджер",
+  "description": "Мессенджер",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

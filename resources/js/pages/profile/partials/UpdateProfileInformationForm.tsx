@@ -53,11 +53,11 @@ export default function UpdateProfileInformation({
     <section className={className}>
       <header>
         <h2 className="text-lg font-medium text-foreground">
-          Profile Information
+          Информация профиля
         </h2>
 
         <p className="mt-1 text-sm text-secondary-foreground">
-          Update your account's profile information and email address.
+          Обновите информацию профиля и адрес электронной почты.
         </p>
       </header>
 
@@ -86,7 +86,7 @@ export default function UpdateProfileInformation({
         </div>
 
         <div>
-          <InputLabel htmlFor="name" value="Name" />
+          <InputLabel htmlFor="name" value="Имя" />
 
           <TextInput
             id="name"
@@ -102,7 +102,7 @@ export default function UpdateProfileInformation({
         </div>
 
         <div>
-          <InputLabel htmlFor="email" value="Email" />
+          <InputLabel htmlFor="email" value="Электронная почта" />
 
           <TextInput
             id="email"
@@ -120,27 +120,27 @@ export default function UpdateProfileInformation({
         {mustVerifyEmail && user.email_verified_at === null && (
           <div>
             <p className="mt-2 text-sm text-foreground">
-              Your email address is unverified.
+              Ваш адрес электронной почты не подтвержден.
               <Link
                 href={route("verification.send")}
                 method="post"
                 as="button"
                 className="btn btn-secondary"
               >
-                Click here to re-send the verification email.
+                Нажмите здесь, чтобы отправить письмо повторно.
               </Link>
             </p>
 
             {status === "verification-link-sent" && (
               <div className="mt-2 text-sm font-medium text-success">
-                A new verification link has been sent to your email address.
+                Новая ссылка для подтверждения отправлена на вашу почту.
               </div>
             )}
           </div>
         )}
 
         <div className="flex items-center gap-4">
-          <PrimaryButton disabled={processing}>Save</PrimaryButton>
+          <PrimaryButton disabled={processing}>Сохранить</PrimaryButton>
 
           <Transition
             show={recentlySuccessful}
@@ -149,7 +149,7 @@ export default function UpdateProfileInformation({
             leave="transition ease-in-out"
             leaveTo="opacity-0"
           >
-            <p className="text-sm text-foreground">Saved.</p>
+            <p className="text-sm text-foreground">Сохранено.</p>
           </Transition>
         </div>
       </form>

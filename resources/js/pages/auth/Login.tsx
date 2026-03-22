@@ -37,13 +37,13 @@ export default function Login({
 
   return (
     <GuestLayout>
-      <Head title="Log in" />
+      <Head title="Вход" />
 
       {status && <FormAlert message={status} />}
 
       <form onSubmit={submit} className="space-y-4">
         <div>
-          <InputLabel htmlFor="email" value="Email" />
+          <InputLabel htmlFor="email" value="Электронная почта" />
 
           <TextInput
             id="email"
@@ -60,7 +60,7 @@ export default function Login({
         </div>
 
         <div>
-          <InputLabel htmlFor="password" value="Password" />
+          <InputLabel htmlFor="password" value="Пароль" />
 
           <TextInput
             id="password"
@@ -82,25 +82,25 @@ export default function Login({
               checked={data.remember}
               onChange={(e) => setData("remember", e.target.checked)}
             />
-            <span className="ms-2 text-sm text-foreground">Remember me</span>
+            <span className="ms-2 text-sm text-foreground">Запомнить меня</span>
           </label>
 
           {canResetPassword && (
             <Link href={route("password.request")} className="btn-link">
-              Forgot your password?
+              Забыли пароль?
             </Link>
           )}
         </div>
 
         <div className="flex">
           <PrimaryButton className="w-full" disabled={processing}>
-            Log in
+            Войти
           </PrimaryButton>
         </div>
 
         <div className="flex justify-center">
           <Link href={route("register")} className="btn-link">
-            Don't have an account?
+            Нет аккаунта?
           </Link>
         </div>
       </form>

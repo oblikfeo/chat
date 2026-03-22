@@ -36,11 +36,11 @@ export default function ResetPassword({
 
   return (
     <GuestLayout>
-      <Head title="Reset Password" />
+      <Head title="Сброс пароля" />
 
       <form onSubmit={submit} className="space-y-4">
         <div>
-          <InputLabel htmlFor="email" value="Email" />
+          <InputLabel htmlFor="email" value="Электронная почта" />
 
           <TextInput
             id="email"
@@ -56,7 +56,7 @@ export default function ResetPassword({
         </div>
 
         <div>
-          <InputLabel htmlFor="password" value="Password" />
+          <InputLabel htmlFor="password" value="Пароль" />
 
           <TextInput
             id="password"
@@ -75,7 +75,7 @@ export default function ResetPassword({
         <div>
           <InputLabel
             htmlFor="password_confirmation"
-            value="Confirm Password"
+            value="Подтверждение пароля"
           />
 
           <TextInput
@@ -92,7 +92,7 @@ export default function ResetPassword({
 
         <div className="flex ">
           <PrimaryButton className="w-full" disabled={processing}>
-            Reset Password
+            Сбросить пароль
           </PrimaryButton>
         </div>
       </form>

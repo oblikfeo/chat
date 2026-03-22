@@ -162,7 +162,7 @@ const Action = ({ chat }: ActionProps) => {
           >
             <div className="flex items-center gap-2">
               <BsCheck2 className="-ml-1 text-lg" />
-              Mark as {chat.is_read ? "Unread" : "Read"}
+              Отметить как {chat.is_read ? "непрочитанное" : "прочитанное"}
             </div>
           </Dropdown.Button>
         )}
@@ -171,14 +171,14 @@ const Action = ({ chat }: ActionProps) => {
           <Dropdown.Button onClick={handleArchiveChat}>
             <div className="flex items-center gap-2">
               <BsArchive />
-              Archive Chat
+              Архивировать чат
             </div>
           </Dropdown.Button>
         ) : (
           <Dropdown.Button onClick={handleUnarchiveChat}>
             <div className="flex items-center gap-2">
               <BsArchive />
-              Unarchive Chat
+              Разархивировать чат
             </div>
           </Dropdown.Button>
         )}
@@ -186,7 +186,7 @@ const Action = ({ chat }: ActionProps) => {
         <Dropdown.Button onClick={deleteChatConfirmation}>
           <div className="flex items-center gap-2">
             <BsXLg />
-            Delete Chat
+            Удалить чат
           </div>
         </Dropdown.Button>
 
@@ -204,12 +204,12 @@ const Action = ({ chat }: ActionProps) => {
               {chat.is_contact_blocked ? (
                 <div className="flex items-center gap-2 text-success">
                   <BsBan />
-                  Unblock Contact
+                  Разблокировать контакт
                 </div>
               ) : (
                 <div className="flex items-center gap-2 text-danger">
                   <BsBan />
-                  Block Contact
+                  Заблокировать контакт
                 </div>
               )}
             </Dropdown.Button>
@@ -222,7 +222,7 @@ const Action = ({ chat }: ActionProps) => {
             <Dropdown.Button onClick={exitGroupConfirmation}>
               <div className="flex items-center gap-2 text-danger">
                 <BsBoxArrowRight />
-                Exit Group
+                Выйти из группы
               </div>
             </Dropdown.Button>
           </>

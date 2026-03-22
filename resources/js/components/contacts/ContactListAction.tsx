@@ -95,7 +95,7 @@ const Action = ({ contact }: ActionProps) => {
         <Dropdown.Button onClick={deleteContactConfirmation}>
           <div className="flex items-center gap-2">
             <BsXLg />
-            Delete Contact
+            Удалить контакт
           </div>
         </Dropdown.Button>
 
@@ -109,12 +109,12 @@ const Action = ({ contact }: ActionProps) => {
           {contact.is_contact_blocked ? (
             <div className="flex items-center gap-2 text-success">
               <BsBan />
-              Unblock Contact
+              Разблокировать контакт
             </div>
           ) : (
             <div className="flex items-center gap-2 text-danger">
               <BsBan />
-              Block Contact
+              Заблокировать контакт
             </div>
           )}
         </Dropdown.Button>

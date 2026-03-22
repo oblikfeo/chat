@@ -15,11 +15,11 @@ export default function Edit({
       user={auth}
       header={
         <h2 className="text-xl font-semibold leading-tight text-foreground">
-          Profile
+          Профиль
         </h2>
       }
     >
-      <Head title="Profile" />
+      <Head title="Профиль" />
 
       <div className="py-4 sm:py-6">
         <div className="mx-auto max-w-7xl space-y-4 px-4 sm:space-y-6 sm:px-6">

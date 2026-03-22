@@ -26,7 +26,7 @@ export default function SidebarMini() {
   return (
     <div
       className={clsx(
-        "order-2 mt-auto flex-row justify-between bg-background sm:order-1 sm:mt-0 sm:flex sm:flex-col sm:items-center sm:justify-center sm:p-2",
+        "order-2 mt-auto flex-row justify-between bg-background pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] sm:order-1 sm:mt-0 sm:flex sm:flex-col sm:items-center sm:justify-center sm:p-2 sm:pb-2",
         route().current("chats.show") ? "hidden" : "flex",
       )}
     >
@@ -90,19 +90,19 @@ export default function SidebarMini() {
               <Dropdown.Button onClick={openPreferences}>
                 <div className="flex items-center gap-2">
                   <BsGear />
-                  Preferences
+                  Настройки
                 </div>
               </Dropdown.Button>
               <Dropdown.Link href={route("profile.edit")}>
                 <div className="flex items-center gap-2">
                   <BsPersonCircle />
-                  Profile
+                  Профиль
                 </div>
               </Dropdown.Link>
               <Dropdown.Link href={route("logout")} method="post" as="button">
                 <div className="flex items-center gap-2">
                   <BsBoxArrowRight />
-                  Log out
+                  Выйти
                 </div>
               </Dropdown.Link>
             </Dropdown.Content>

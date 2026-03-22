@@ -22,21 +22,21 @@ export default function Authenticated({
                 </Link>
               </div>
 
-              <NavLink href={route("chats.index")} active={false}>
-                Chats
-              </NavLink>
-            </div>
+            <NavLink href={route("chats.index")} active={false}>
+              Чаты
+            </NavLink>
+          </div>
 
-            <div className="ml-auto flex items-center">
-              <Link
-                href={route("logout")}
-                as="button"
-                method="post"
-                className="btn btn-secondary flex items-center gap-2 whitespace-nowrap border-none"
-              >
-                <BsBoxArrowRight />
-                Log out
-              </Link>
+          <div className="ml-auto flex items-center">
+            <Link
+              href={route("logout")}
+              as="button"
+              method="post"
+              className="btn btn-secondary flex items-center gap-2 whitespace-nowrap border-none"
+            >
+              <BsBoxArrowRight />
+              Выйти
+            </Link>
             </div>
           </div>
         </div>

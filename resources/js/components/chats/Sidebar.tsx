@@ -27,7 +27,7 @@ export default function Sidebar() {
       )}
     >
       <div className="flex items-center justify-between px-2 pt-2 sm:pb-0">
-        <h3 className="text-2xl font-semibold">Chats</h3>
+        <h3 className="text-2xl font-semibold">Чаты</h3>
         <button
           className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white"
           onClick={addNewGroup}
@@ -44,13 +44,13 @@ export default function Sidebar() {
 
       {chats.length === 0 && search.length > 0 && (
         <p className="flex h-full flex-1 items-center justify-center">
-          User not found
+          Пользователь не найден
         </p>
       )}
 
       {chats.length === 0 && search.length === 0 && (
         <p className="flex h-full flex-1 items-center justify-center">
-          No chat yet
+          Нет чатов
         </p>
       )}
     </div>

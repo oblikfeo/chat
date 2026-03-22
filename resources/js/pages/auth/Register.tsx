@@ -13,12 +13,11 @@ export default function Register() {
       name: "",
       email: "",
       password: "",
-      password_confirmation: "",
     });
 
   useEffect(() => {
     return () => {
-      reset("password", "password_confirmation");
+      reset("password");
     };
   }, []);
 
@@ -30,11 +29,11 @@ export default function Register() {
 
   return (
     <GuestLayout>
-      <Head title="Register" />
+      <Head title="Регистрация" />
 
       <form onSubmit={submit} className="space-y-4">
         <div>
-          <InputLabel htmlFor="name" value="Name" />
+          <InputLabel htmlFor="name" value="Имя" />
 
           <TextInput
             id="name"
@@ -50,7 +49,7 @@ export default function Register() {
         </div>
 
         <div>
-          <InputLabel htmlFor="email" value="Email" />
+          <InputLabel htmlFor="email" value="Электронная почта" />
 
           <TextInput
             id="email"
@@ -66,7 +65,7 @@ export default function Register() {
         </div>
 
         <div>
-          <InputLabel htmlFor="password" value="Password" />
+          <InputLabel htmlFor="password" value="Пароль" />
 
           <TextInput
             id="password"
@@ -81,34 +80,15 @@ export default function Register() {
           <InputError message={errors.password} className="mt-2" />
         </div>
 
-        <div>
-          <InputLabel
-            htmlFor="password_confirmation"
-            value="Confirm Password"
-          />
-
-          <TextInput
-            id="password_confirmation"
-            type="password"
-            name="password_confirmation"
-            value={data.password_confirmation}
-            className="mt-1 block w-full"
-            autoComplete="new-password"
-            onChange={(e) => setData("password_confirmation", e.target.value)}
-          />
-
-          <InputError message={errors.password_confirmation} className="mt-2" />
-        </div>
-
         <div className="flex items-center">
           <PrimaryButton className="w-full" disabled={processing}>
-            Register
+            Зарегистрироваться
           </PrimaryButton>
         </div>
 
         <div className="flex justify-center">
           <Link href={route("login")} className="btn-link">
-            Already registered?
+            Уже есть аккаунт?
           </Link>
         </div>
       </form>
