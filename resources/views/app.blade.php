@@ -7,18 +7,18 @@
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- PWA -->
-    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <!-- PWA: пути от корня сайта, без привязки к APP_URL — иначе на телефоне manifest/иконки могут указывать не на тот хост -->
+    <link rel="manifest" href="/site.webmanifest">
     <meta name="theme-color" content="#2563eb" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="{{ config('app.name', 'Messenger') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+    <link rel="apple-touch-icon" href="/images/logo.png">
 
     <!-- Icon -->
-    <link rel="icon" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" href="/images/logo.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,7 +59,7 @@
     </style>
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased bg-background text-foreground">
     @inertia
 </body>
 

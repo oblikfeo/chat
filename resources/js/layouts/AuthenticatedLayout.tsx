@@ -11,8 +11,8 @@ export default function Authenticated({
   children,
 }: PropsWithChildren<{ user: User; header?: ReactNode }>) {
   return (
-    <div className="min-h-screen bg-secondary">
-      <nav className="border-b border-secondary bg-background">
+    <div className="min-h-[100dvh] min-h-[-webkit-fill-available] bg-secondary">
+      <nav className="border-b border-secondary bg-background pt-[max(1.75rem,env(safe-area-inset-top,0px))]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
             <div className="flex w-full gap-4">
