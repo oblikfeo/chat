@@ -6,11 +6,9 @@ import { useScreenSize } from "@/hooks/use-screen-size";
 import { Link } from "@inertiajs/react";
 import clsx from "clsx";
 import {
-  BsArchive,
   BsBoxArrowRight,
   BsChat,
   BsGear,
-  BsPeople,
   BsPersonCircle,
 } from "react-icons/bs";
 
@@ -41,26 +39,6 @@ export default function SidebarMini() {
         {notificationCount > 0 && <BadgeNotification />}
       </Link>
 
-      <Link
-        href={route("contacts.index")}
-        className={clsx(
-          "flex flex-1 items-center justify-center rounded-lg p-3 transition-all hover:bg-secondary sm:flex-initial",
-          route().current("contacts.*") && "bg-secondary",
-        )}
-      >
-        <BsPeople className="h-6 w-6" />
-      </Link>
-
-      <Link
-        href={route("archived_chats.index")}
-        className={clsx(
-          "flex flex-1 items-center justify-center rounded-lg p-3 transition-all hover:bg-secondary sm:flex-initial",
-          route().current("archived_chats.*") && "bg-secondary",
-        )}
-      >
-        <BsArchive className="h-6 w-6" />
-      </Link>
-
       {width <= 640 ? (
         <Link
           href={route("preferences.index")}
@@ -69,11 +47,7 @@ export default function SidebarMini() {
             route().current("preferences.index") && "bg-secondary",
           )}
         >
-          <img
-            src={auth.avatar}
-            alt=""
-            className="h-8 w-8 rounded-full border border-secondary sm:h-10 sm:w-10"
-          />
+          <BsGear className="h-6 w-6" />
         </Link>
       ) : (
         <div className="relative flex flex-1 cursor-pointer items-center justify-center rounded-lg px-3 transition-all hover:bg-secondary sm:mt-auto sm:flex-initial sm:px-0 sm:hover:bg-transparent">
