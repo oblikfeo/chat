@@ -57,7 +57,7 @@ export default function UpdateProfileInformation({
         </h2>
 
         <p className="mt-1 text-sm text-secondary-foreground">
-          Обновите информацию профиля и адрес электронной почты.
+          Обновите информацию вашего профиля.
         </p>
       </header>
 
@@ -100,44 +100,6 @@ export default function UpdateProfileInformation({
 
           <InputError className="mt-2" message={errors.name} />
         </div>
-
-        <div>
-          <InputLabel htmlFor="email" value="Электронная почта" />
-
-          <TextInput
-            id="email"
-            type="email"
-            className="mt-1 block w-full"
-            value={data.email}
-            onChange={(e) => setData("email", e.target.value)}
-            required
-            autoComplete="username"
-          />
-
-          <InputError className="mt-2" message={errors.email} />
-        </div>
-
-        {mustVerifyEmail && user.email_verified_at === null && (
-          <div>
-            <p className="mt-2 text-sm text-foreground">
-              Ваш адрес электронной почты не подтвержден.
-              <Link
-                href={route("verification.send")}
-                method="post"
-                as="button"
-                className="btn btn-secondary"
-              >
-                Нажмите здесь, чтобы отправить письмо повторно.
-              </Link>
-            </p>
-
-            {status === "verification-link-sent" && (
-              <div className="mt-2 text-sm font-medium text-success">
-                Новая ссылка для подтверждения отправлена на вашу почту.
-              </div>
-            )}
-          </div>
-        )}
 
         <div className="flex items-center gap-4">
           <PrimaryButton disabled={processing}>Сохранить</PrimaryButton>
