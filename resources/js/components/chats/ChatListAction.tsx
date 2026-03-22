@@ -142,8 +142,10 @@ const Action = ({ chat }: ActionProps) => {
         <button
           type="button"
           className={clsx(
-            "rounded-full border border-secondary bg-background p-1.5 shadow-sm group-hover:visible group-hover:flex",
-            open ? "visible" : "invisible",
+            "inline-flex items-center justify-center rounded-full border border-secondary bg-background p-1.5 shadow-sm touch-manipulation",
+            /* Тачскрин: всегда видна; мышь: только при hover строки */
+            "sm:hidden sm:group-hover:inline-flex [@media(pointer:coarse)]:!inline-flex",
+            open && "!inline-flex",
           )}
         >
           <BsThreeDots className="text-secondary-foreground" />

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\JsonColumnQuery;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,15 +17,20 @@ class ChatMessageFile extends Model
 
     public function sent_by() 
     {
+        $driver = $this->getConnection()->getDriverName();
+        $uid = auth()->id();
+
+        if ($driver === 'sqlite') {
+            return $this->belongsTo(User::class, 'sent_by_id')
+                ->selectRaw("id, CASE WHEN id = ? THEN 'You' ELSE name END as name, avatar", [$uid]);
+        }
+
         return $this->belongsTo(User::class, 'sent_by_id')
-            ->selectRaw('id, IF (id = ?, "You", name) as name, avatar', [auth()->id()]);
+            ->selectRaw('id, IF (id = ?, "You", name) as name, avatar', [$uid]);
     }
 
     public function scopeDeletedInIds(Builder $query) 
     {
-        $query->where(function (Builder $query) {
-            $query->whereNull('deleted_in_id')
-                  ->orWhereRaw("JSON_SEARCH(deleted_in_id, 'ONE', ?, NULL, '$[*].id') IS NULL", auth()->id());
-        });
+        JsonColumnQuery::applyDeletedInIdsScope($query);
     }
 }

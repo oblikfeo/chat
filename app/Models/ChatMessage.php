@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\JsonColumnQuery;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -89,14 +90,11 @@ class ChatMessage extends Model
 
     public function scopeDeletedInIds(Builder $query) 
     {
-        $query->where(function (Builder $query) {
-            $query->whereNull('deleted_in_id')
-                  ->orWhereRaw("JSON_SEARCH(deleted_in_id, 'ONE', ?, NULL, '$[*].id') IS NULL", auth()->id());
-        });
+        JsonColumnQuery::applyDeletedInIdsScope($query);
     }
 
     public function scopeNotSeen(Builder $query) 
     {
-        $query->whereRaw("JSON_SEARCH(seen_in_id, 'ONE', ?, NULL, '$[*].id') IS NULL", auth()->id());
+        JsonColumnQuery::applyNotSeenScope($query);
     }
 }

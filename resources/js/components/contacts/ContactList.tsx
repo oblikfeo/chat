@@ -36,9 +36,9 @@ export default function ContactList() {
           <div className="group relative flex items-center" key={contact.id}>
             <Link
               href={route("chats.show", contact.id)}
-              as="button"
               className={clsx(
-                "relative flex w-full flex-1 items-center gap-3 rounded-lg p-3 text-left transition-all group-hover:bg-secondary",
+                "relative flex w-full min-w-0 flex-1 items-center gap-3 rounded-lg p-3 pr-11 text-left transition-colors touch-manipulation",
+                "active:bg-secondary/90 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-secondary",
                 contact.is_contact_blocked && "opacity-25",
               )}
             >

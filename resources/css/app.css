@@ -3,6 +3,13 @@
 @tailwind utilities;
 
 @layer base {
+  /* Один тап по ссылкам/кнопкам на тачскринах, без «ложного» hover */
+  a[href],
+  button,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222 84% 5%;

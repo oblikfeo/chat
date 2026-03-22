@@ -42,15 +42,15 @@ trait Chat
                 ->where('users.name', 'LIKE', '%'. request('query') .'%')
                 ->orWhere('cg.name', 'LIKE', '%'. request('query') .'%')
                 ->selectRaw('
-                    IFNULL (cg.id, users.id) as id,
-                    IFNULL (cg.name, users.name) as name,
-                    IFNULL (cg.avatar, users.avatar) as avatar,
+                    COALESCE(cg.id, users.id) as id,
+                    COALESCE(cg.name, users.name) as name,
+                    COALESCE(cg.avatar, users.avatar) as avatar,
                     NULL as message_id,
                     NULL as body,
                     1 as is_read,
                     0 as is_reply,
-                    IF (cg.id IS NULL AND users.is_online = 1 AND users.active_status = 1, 1, 0) as is_online,
-                    IF (cg.id IS NULL, active_status, 0) as active_status,
+                    CASE WHEN cg.id IS NULL AND users.is_online = 1 AND users.active_status = 1 THEN 1 ELSE 0 END as is_online,
+                    CASE WHEN cg.id IS NULL THEN active_status ELSE 0 END as active_status,
                     c.is_contact_blocked,
                     NULL as created_at,
                     ? as chat_type
@@ -224,7 +224,7 @@ trait Chat
                 from_id, 
                 to_id, 
                 to_type, 
-                IF (to_type = ?, ?, ?) as chat_type, 
+                CASE WHEN to_type = ? THEN ? ELSE ? END as chat_type, 
                 body, 
                 seen_in_id, 
                 sort_id, 
@@ -277,9 +277,17 @@ trait Chat
 
     public function links(string $id) 
     {
-        $chats = ChatMessage::forUserOrGroup($id)
-            ->deletedInIds()
-            ->whereRaw("body REGEXP 'https?:\/\/[^\\s]+'")
+        $linksQuery = ChatMessage::forUserOrGroup($id)
+            ->deletedInIds();
+
+        $driver = $linksQuery->getConnection()->getDriverName();
+        if ($driver === 'sqlite') {
+            $linksQuery->whereRaw("(instr(body, 'http://') > 0 OR instr(body, 'https://') > 0)");
+        } else {
+            $linksQuery->whereRaw("body REGEXP 'https?:\/\/[^\\s]+'");
+        }
+
+        $chats = $linksQuery
             ->orderByDesc('sort_id')
             ->pluck('body');
 
