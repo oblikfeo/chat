@@ -63,18 +63,25 @@ export default function PopupGallery() {
           leaveFrom="opacity-100 translate-y-0 sm:scale-100"
           leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         >
-          <Dialog.Panel className="relative z-30 flex h-screen w-screen transform flex-col transition-all">
-            <div className="relative z-10 flex w-full items-center justify-between px-4 py-2">
-              <div className="flex items-center gap-2">
-                <div>
+          <Dialog.Panel className="relative z-30 flex h-[100dvh] min-h-0 w-screen max-w-[100vw] transform flex-col overflow-hidden transition-all">
+            <div
+              className="relative z-[200] flex w-full shrink-0 items-center justify-between gap-3 border-b border-white/10 bg-black/40 px-4 pb-3 backdrop-blur-sm"
+              style={{
+                paddingTop: "max(0.75rem, env(safe-area-inset-top, 0px))",
+                paddingLeft: "max(1rem, env(safe-area-inset-left, 0px))",
+                paddingRight: "max(1rem, env(safe-area-inset-right, 0px))",
+              }}
+            >
+              <div className="flex min-w-0 flex-1 items-center gap-2">
+                <div className="shrink-0">
                   <img
                     src={selectedMedia.sent_by.avatar}
                     alt={selectedMedia.sent_by.name}
                     className="h-10 w-10 rounded-full"
                   />
                 </div>
-                <div className="leading-4">
-                  <h5 className="font-medium text-gray-50">
+                <div className="min-w-0 leading-4">
+                  <h5 className="truncate font-medium text-gray-50">
                     {selectedMedia.sent_by.name}
                   </h5>
                   <span className="text-xs text-gray-400">
@@ -83,13 +90,16 @@ export default function PopupGallery() {
                 </div>
               </div>
               <button
-                className="flex items-center justify-center rounded-lg border-2 border-secondary/25 p-1 text-xl text-gray-50 transition-all hover:scale-105 hover:border-primary hover:text-primary focus-visible:outline-none dark:border-secondary/75 dark:hover:border-primary"
+                type="button"
+                aria-label="Закрыть"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 border-white/20 bg-black/50 text-xl text-gray-50 transition-colors hover:border-primary hover:text-primary focus-visible:outline focus-visible:ring-2 focus-visible:ring-primary"
                 onClick={clearSelectedMedia}
               >
-                <BsXLg />
+                <BsXLg className="h-6 w-6" />
               </button>
             </div>
 
+            <div className="relative z-[50] flex min-h-0 flex-1 flex-col items-center justify-center overflow-hidden">
             {isLoading && (
               <div className="image-gallery-loader-wrapper">
                 <div className="image-gallery-loader-original m-auto">
@@ -116,7 +126,7 @@ export default function PopupGallery() {
               additionalClass={
                 isLoading
                   ? "hidden"
-                  : "m-auto w-full lg:w-[80%] xl:w-[70%] z-[60]"
+                  : "m-auto w-full lg:w-[80%] xl:w-[70%]"
               }
               items={media
                 .sort((a, b) => a.created_at.localeCompare(b.created_at))
@@ -149,6 +159,7 @@ export default function PopupGallery() {
               onErrorImageURL="The image could not be loaded"
               onSlide={handleOnSlide}
             />
+            </div>
           </Dialog.Panel>
         </Transition.Child>
       </Dialog>
