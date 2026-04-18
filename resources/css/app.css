@@ -5,7 +5,9 @@
 @layer base {
   a[href],
   button,
-  [role="button"] {
+  [role="button"],
+  /* кликабельные div’ы в интерфейсе — один тап в PWA без «первый hover / второй клик» */
+  .cursor-pointer {
     touch-action: manipulation;
   }
 
@@ -29,8 +31,6 @@
     padding-right: env(safe-area-inset-right, 0px);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Снижает нежелательный double-tap zoom на кликабельных областях вне button/a */
-    touch-action: manipulation;
   }
 
   * {

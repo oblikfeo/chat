@@ -1,45 +1,35 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useChatMessageContext } from "@/contexts/chat-message-context";
 import moment from "moment";
 import { BsXLg } from "react-icons/bs";
 import { FaCircleNotch } from "react-icons/fa";
-import ImageGallery from "react-image-gallery";
-import ReactImageGallery from "react-image-gallery";
 import { isVideoLinkValid } from "@/utils";
 
+/** Одно открытое фото/видео — без карусели и свайпов по всей переписке */
 export default function PopupGallery() {
-  const { media, selectedMedia, setSelectedMedia, clearSelectedMedia } =
-    useChatMessageContext();
-
+  const { selectedMedia, clearSelectedMedia } = useChatMessageContext();
   const [isLoading, setIsLoading] = useState(true);
-  const refGallery = useRef<ReactImageGallery>(null);
 
   useEffect(() => {
-    if (refGallery.current) {
-      const currentIndex = media.findIndex(
-        (image) => image.file_name === selectedMedia?.file_name,
-      );
-      refGallery.current?.slideToIndex(currentIndex);
+    if (selectedMedia) {
+      setIsLoading(true);
     }
-  }, [selectedMedia]);
+  }, [selectedMedia?.file_name, selectedMedia?.file_path]);
 
-  if (!selectedMedia) return;
+  if (!selectedMedia) {
+    return null;
+  }
 
-  const handleOnSlide = (currentIndex: number) => {
-    setSelectedMedia(media[currentIndex]);
-  };
+  const src = `${selectedMedia.file_path}/${selectedMedia.file_name}`;
+  const isVideo = isVideoLinkValid(selectedMedia.original_name);
 
   return (
-    <Transition
-      show={typeof selectedMedia !== undefined}
-      as={Fragment}
-      leave="duration-200"
-    >
+    <Transition show={!!selectedMedia} as={Fragment} leave="duration-200">
       <Dialog
         as="div"
         id="modal"
-        className="fixed inset-0 z-50 flex transform items-center overflow-hidden transition-all"
+        className="fixed inset-0 z-50 flex items-center overflow-hidden"
         onClose={clearSelectedMedia}
       >
         <Transition.Child
@@ -51,19 +41,19 @@ export default function PopupGallery() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="absolute inset-0 h-full w-full bg-black/90" />
+          <div className="absolute inset-0 bg-black/90" aria-hidden />
         </Transition.Child>
 
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
-          enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          enterTo="opacity-100 translate-y-0 sm:scale-100"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
           leave="ease-in duration-200"
-          leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-          leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
         >
-          <Dialog.Panel className="relative z-30 flex h-[100dvh] min-h-0 w-screen max-w-[100vw] transform flex-col overflow-hidden transition-all">
+          <Dialog.Panel className="relative z-30 flex h-[100dvh] min-h-0 w-screen max-w-[100vw] flex-col overflow-hidden">
             <div
               className="relative z-[200] flex w-full shrink-0 items-center justify-between gap-3 border-b border-white/10 bg-black/40 px-4 pb-3 backdrop-blur-sm"
               style={{
@@ -99,66 +89,38 @@ export default function PopupGallery() {
               </button>
             </div>
 
-            <div className="relative z-[50] flex min-h-0 flex-1 flex-col items-center justify-center overflow-hidden">
-            {isLoading && (
-              <div className="image-gallery-loader-wrapper">
-                <div className="image-gallery-loader-original m-auto">
-                  <FaCircleNotch className="animate-spin" />
+            <div
+              className="relative z-[50] flex min-h-0 flex-1 items-center justify-center overflow-auto px-2"
+              style={{
+                paddingBottom: "max(0.5rem, env(safe-area-inset-bottom, 0px))",
+              }}
+            >
+              {isLoading && (
+                <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                  <FaCircleNotch className="h-10 w-10 animate-spin text-white/80" />
                 </div>
-                <div className="mx-auto mb-1 flex">
-                  {media.map((_, index) => (
-                    <div
-                      key={index}
-                      className="image-gallery-thumbnail image-gallery-loader-thumbnail"
-                    >
-                      <FaCircleNotch className="animate-spin" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <ImageGallery
-              ref={refGallery}
-              showFullscreenButton={false}
-              showPlayButton={false}
-              infinite={false}
-              additionalClass={
-                isLoading
-                  ? "hidden"
-                  : "m-auto w-full lg:w-[80%] xl:w-[70%]"
-              }
-              items={media
-                .sort((a, b) => a.created_at.localeCompare(b.created_at))
-                .map((image) => {
-                  const src = `${image.file_path}/${image.file_name}`;
-                  const video = isVideoLinkValid(image.original_name);
-                  return {
-                    thumbnail: src,
-                    original: src,
-                    renderItem: () =>
-                      video ? (
-                        <video
-                          src={src}
-                          controls
-                          playsInline
-                          className="max-h-[85vh] max-w-full object-contain"
-                          onLoadedData={() => setIsLoading(false)}
-                        />
-                      ) : (
-                        <img
-                          src={src}
-                          alt={image.original_name}
-                          className="max-h-[85vh] max-w-full object-contain"
-                          onLoad={() => setIsLoading(false)}
-                        />
-                      ),
-                  };
-                })}
-              onImageLoad={() => setIsLoading(false)}
-              onErrorImageURL="The image could not be loaded"
-              onSlide={handleOnSlide}
-            />
+              )}
+              {isVideo ? (
+                <video
+                  key={src}
+                  src={src}
+                  controls
+                  playsInline
+                  className="max-h-full w-full max-w-full object-contain"
+                  onLoadedData={() => setIsLoading(false)}
+                  onError={() => setIsLoading(false)}
+                />
+              ) : (
+                <img
+                  key={src}
+                  src={src}
+                  alt={selectedMedia.original_name}
+                  className="max-h-full w-auto max-w-full object-contain"
+                  onLoad={() => setIsLoading(false)}
+                  onError={() => setIsLoading(false)}
+                  draggable={false}
+                />
+              )}
             </div>
           </Dialog.Panel>
         </Transition.Child>
