@@ -4,6 +4,8 @@ import { Contact } from "./user";
 export type Chat = {
   id: string;
   name: string;
+  /** подставляется в поиске / приватных чатах, если бэкенд отдаёт */
+  email?: string;
   avatar: string;
   message_id: string;
   from_id: string;
