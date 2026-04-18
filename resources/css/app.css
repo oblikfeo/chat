@@ -3,41 +3,45 @@
 @tailwind utilities;
 
 @layer base {
-  /* Один тап по ссылкам/кнопкам на тачскринах, без «ложного» hover */
   a[href],
   button,
   [role="button"] {
     touch-action: manipulation;
   }
 
-  /* iPhone: вырез и home indicator; в Safari-вкладке панель браузера всё равно видна — это норма iOS */
   html {
     height: 100%;
+    scroll-behavior: smooth;
   }
 
   body {
     min-height: 100dvh;
     min-height: -webkit-fill-available;
-    /* Верхний отступ задаём в layout (AppLayout и т.д.), чтобы не было двойного зазора */
     padding-bottom: env(safe-area-inset-bottom, 0px);
     padding-left: env(safe-area-inset-left, 0px);
     padding-right: env(safe-area-inset-right, 0px);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
   }
 
   :root {
     --background: 0 0% 100%;
     --foreground: 222 84% 5%;
-
     --secondary: 210 40% 96%;
     --secondary-foreground: 215 16% 47%;
+    --accent: 217 91% 60%;
   }
 
   .dark {
-    --background: 200 6% 10%;
+    --background: 222 47% 11%;
     --foreground: 210 40% 98%;
-
-    --secondary: 210 6% 13%;
-    --secondary-foreground: 210 6% 40%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 215 20% 65%;
+    --accent: 217 91% 60%;
   }
 }
 
@@ -110,5 +114,85 @@
       transform: translateY(-6px);
       opacity: 1;
     }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.2s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.25s ease-out;
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.2s ease-out;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--secondary)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--secondary));
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--secondary-foreground));
   }
 }

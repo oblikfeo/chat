@@ -23,47 +23,111 @@ export default function ContactList() {
     }
   }, [inView, paginate]);
 
-  if (contacts.length === 0) return;
+  if (contacts.length === 0) return null;
+
+  const onlineContacts = contacts.filter((c) => c.is_online);
+  const offlineContacts = contacts.filter((c) => !c.is_online);
 
   return (
-    <div className="relative max-h-[calc(100vh_-_158px)] flex-1 overflow-y-auto px-2 sm:max-h-max sm:pb-2">
-      {contacts
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .sort((a, b) =>
-          a.is_online === b.is_online ? 0 : a.is_online ? -1 : 1,
-        )
-        .map((contact) => (
-          <div className="group relative flex items-center" key={contact.id}>
-            <Link
-              href={route("chats.show", contact.id)}
-              className={clsx(
-                "relative flex w-full min-w-0 flex-1 items-center gap-3 rounded-lg p-3 pr-11 text-left transition-colors touch-manipulation",
-                "active:bg-secondary/90 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-secondary",
-                contact.is_contact_blocked && "opacity-25",
-              )}
-            >
-              <div className="relative shrink-0">
-                <img
-                  src={contact.avatar}
-                  alt={contact.name}
-                  className="h-10 w-10 rounded-full border border-secondary"
-                />
-                {contact.is_online && <BadgeOnline />}
-              </div>
+    <div className="relative max-h-[calc(100vh_-_200px)] flex-1 overflow-y-auto px-2 scrollbar-thin sm:max-h-[calc(100vh_-_130px)] sm:pb-2">
+      {onlineContacts.length > 0 && (
+        <div className="mb-2">
+          <p className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-secondary-foreground">
+            В сети — {onlineContacts.length}
+          </p>
+          {onlineContacts
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((contact, index) => (
+              <div
+                className="group relative flex animate-fade-in items-center"
+                key={contact.id}
+                style={{ animationDelay: `${index * 30}ms` }}
+              >
+                <Link
+                  href={route("chats.show", contact.id)}
+                  className={clsx(
+                    "relative flex w-full min-w-0 flex-1 items-center gap-3 rounded-xl p-3 pr-11 text-left transition-all duration-200 touch-manipulation",
+                    "active:scale-[0.98] active:bg-secondary/80",
+                    "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-secondary/60",
+                    contact.is_contact_blocked && "opacity-40 grayscale",
+                  )}
+                >
+                  <div className="relative shrink-0">
+                    <img
+                      src={contact.avatar}
+                      alt={contact.name}
+                      className="h-11 w-11 rounded-full object-cover ring-2 ring-success/30"
+                    />
+                    <BadgeOnline />
+                  </div>
 
-              <div className="overflow-hidden">
-                <h5 className="truncate font-medium">{contact.name}</h5>
-              </div>
-            </Link>
+                  <div className="min-w-0 flex-1">
+                    <h5 className="truncate font-semibold">{contact.name}</h5>
+                    <span className="text-xs text-success">В сети</span>
+                  </div>
+                </Link>
 
-            <ContactListAction contact={contact} />
-          </div>
-        ))}
+                <ContactListAction contact={contact} />
+              </div>
+            ))}
+        </div>
+      )}
+
+      {offlineContacts.length > 0 && (
+        <div>
+          {onlineContacts.length > 0 && (
+            <p className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-secondary-foreground">
+              Не в сети — {offlineContacts.length}
+            </p>
+          )}
+          {offlineContacts
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((contact, index) => (
+              <div
+                className="group relative flex animate-fade-in items-center"
+                key={contact.id}
+                style={{ animationDelay: `${(onlineContacts.length + index) * 30}ms` }}
+              >
+                <Link
+                  href={route("chats.show", contact.id)}
+                  className={clsx(
+                    "relative flex w-full min-w-0 flex-1 items-center gap-3 rounded-xl p-3 pr-11 text-left transition-all duration-200 touch-manipulation",
+                    "active:scale-[0.98] active:bg-secondary/80",
+                    "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-secondary/60",
+                    contact.is_contact_blocked && "opacity-40 grayscale",
+                  )}
+                >
+                  <div className="relative shrink-0">
+                    <img
+                      src={contact.avatar}
+                      alt={contact.name}
+                      className="h-11 w-11 rounded-full object-cover ring-2 ring-secondary"
+                    />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <h5 className="truncate font-semibold">{contact.name}</h5>
+                    <span className="text-xs text-secondary-foreground">
+                      Не в сети
+                    </span>
+                  </div>
+                </Link>
+
+                <ContactListAction contact={contact} />
+              </div>
+            ))}
+        </div>
+      )}
 
       {paginate.next_page_url && (
-        <button className="mx-auto mt-4 flex" ref={loadMoreRef}>
-          <BsArrowClockwise className="animate-spin text-2xl text-secondary-foreground" />
-        </button>
+        <div className="flex justify-center py-4">
+          <button
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary/50"
+            ref={loadMoreRef}
+          >
+            <BsArrowClockwise className="h-5 w-5 animate-spin text-primary" />
+          </button>
+        </div>
       )}
     </div>
   );

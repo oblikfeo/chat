@@ -7,7 +7,12 @@ const Modal = ({
   children,
 }: PropsWithChildren<{ className?: string }>) => {
   return (
-    <div className={clsx("flex flex-col gap-4 p-4 text-foreground", className)}>
+    <div
+      className={clsx(
+        "flex flex-col gap-4 p-5 text-foreground animate-fade-in",
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -15,10 +20,13 @@ const Modal = ({
 
 const Header = ({ title, onClose }: { title: string; onClose: () => void }) => {
   return (
-    <div className="flex items-center">
-      <h2 className="text-lg font-medium">{title}</h2>
-      <button className="btn btn-secondary btn-close ml-auto" onClick={onClose}>
-        <BsX />
+    <div className="flex items-center justify-between">
+      <h2 className="text-xl font-bold">{title}</h2>
+      <button
+        className="flex h-9 w-9 items-center justify-center rounded-full text-secondary-foreground transition-colors hover:bg-secondary hover:text-foreground"
+        onClick={onClose}
+      >
+        <BsX className="h-6 w-6" />
       </button>
     </div>
   );
@@ -40,7 +48,11 @@ const Footer = ({
   className,
   children,
 }: PropsWithChildren<{ className?: string }>) => {
-  return <div className={className}>{children}</div>;
+  return (
+    <div className={clsx("flex justify-end gap-2 pt-2", className)}>
+      {children}
+    </div>
+  );
 };
 
 Modal.Header = Header;

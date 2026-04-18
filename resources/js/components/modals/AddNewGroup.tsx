@@ -7,19 +7,19 @@ import {
   ChangeEvent,
   FormEventHandler,
   Fragment,
-  useEffect,
   useRef,
 } from "react";
-import { BsCamera } from "react-icons/bs";
+import { BsCamera, BsArrowLeft } from "react-icons/bs";
 import InputLabel from "@/components/InputLabel";
 import TextInput from "@/components/TextInput";
 import InputError from "@/components/InputError";
 import TextArea from "@/components/TextArea";
 import ComboBox from "@/components/ComboBox";
 import { ChatMessagePageProps } from "@/types";
+import clsx from "clsx";
 
 export default function AddNewGroup() {
-  const { closeModal } = useModalContext<Chat>();
+  const { closeModal, openModal } = useModalContext<Chat>();
 
   const avatarRef = useRef<HTMLImageElement>(null);
 
@@ -64,43 +64,64 @@ export default function AddNewGroup() {
     setData("group_members", value);
   };
 
+  const goBack = () => {
+    openModal({ view: "NEW_CHAT_SELECTOR", size: "lg" });
+  };
+
   return (
     <form onSubmit={handleOnSubmit} className="space-y-4">
       <Modal>
-        <Modal.Header title="New Group" onClose={closeModal} />
-        <Modal.Body as={Fragment}>
-          <div className="picture relative">
-            <img
-              src="/images/group-avatar.png"
-              alt="group-avatar.png"
-              className="mx-auto h-20 w-20 rounded-full border border-secondary"
-              ref={avatarRef}
-            />
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={goBack}
+            className="flex h-9 w-9 items-center justify-center rounded-full text-secondary-foreground transition-colors hover:bg-secondary hover:text-foreground"
+          >
+            <BsArrowLeft className="h-5 w-5" />
+          </button>
+          <h2 className="text-xl font-bold">Новая группа</h2>
+        </div>
 
-            <label
-              htmlFor="avatar"
-              className="btn btn-primary absolute left-1/2 top-6 flex translate-x-5 cursor-pointer items-center justify-center rounded-full px-2"
-              tabIndex={0}
-            >
-              <BsCamera />
-              <input
-                type="file"
-                onChange={changeAvatar}
-                id="avatar"
-                className="hidden"
+        <Modal.Body as={Fragment}>
+          <div className="relative flex justify-center">
+            <div className="relative">
+              <img
+                src="/images/group-avatar.png"
+                alt="Аватар группы"
+                className="h-24 w-24 rounded-full border-2 border-secondary object-cover"
+                ref={avatarRef}
               />
-            </label>
+
+              <label
+                htmlFor="avatar"
+                className={clsx(
+                  "absolute bottom-0 right-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full",
+                  "bg-primary text-white shadow-md transition-all hover:bg-primary-dark",
+                )}
+                tabIndex={0}
+              >
+                <BsCamera className="h-4 w-4" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={changeAvatar}
+                  id="avatar"
+                  className="hidden"
+                />
+              </label>
+            </div>
 
             <InputError className="mt-2 text-center" message={errors.avatar} />
           </div>
 
-          <div className="space-y-2">
-            <InputLabel htmlFor="name" value="Subject" />
+          <div className="space-y-1.5">
+            <InputLabel htmlFor="name" value="Название группы" />
 
             <TextInput
               id="name"
               type="text"
               className="mt-1 block w-full"
+              placeholder="Введите название..."
               value={data.name}
               onChange={(e) => setData("name", e.target.value)}
             />
@@ -108,12 +129,13 @@ export default function AddNewGroup() {
             <InputError className="mt-2" message={errors.name} />
           </div>
 
-          <div className="space-y-2">
-            <InputLabel htmlFor="description" value="Description" />
+          <div className="space-y-1.5">
+            <InputLabel htmlFor="description" value="Описание (необязательно)" />
 
             <TextArea
               id="description"
               className="mt-1 block w-full"
+              placeholder="О чём эта группа..."
               value={data.description}
               onChange={(e) => setData("description", e.target.value)}
             />
@@ -121,8 +143,8 @@ export default function AddNewGroup() {
             <InputError className="mt-2" message={errors.description} />
           </div>
 
-          <div className="relative space-y-2">
-            <InputLabel htmlFor="group_members" value="Add members" />
+          <div className="relative space-y-1.5">
+            <InputLabel htmlFor="group_members" value="Участники" />
 
             <ComboBox
               url={route("users.index")}
@@ -131,16 +153,38 @@ export default function AddNewGroup() {
               refId="group_members"
             />
 
+            <p className="text-xs text-secondary-foreground">
+              Начните вводить имя для поиска участников
+            </p>
+
             <InputError className="mt-2" message={errors.group_members} />
           </div>
         </Modal.Body>
 
-        <Modal.Footer className="flex justify-between gap-4">
-          <button className="btn btn-secondary flex-1" onClick={closeModal}>
-            Cancel
+        <Modal.Footer className="flex gap-3 pt-4">
+          <button
+            type="button"
+            className="btn btn-secondary flex-1"
+            onClick={closeModal}
+          >
+            Отмена
           </button>
-          <button className="btn btn-primary flex-1" disabled={processing}>
-            Save
+          <button
+            type="submit"
+            className={clsx(
+              "btn btn-primary flex-1",
+              processing && "opacity-50",
+            )}
+            disabled={processing}
+          >
+            {processing ? (
+              <span className="flex items-center justify-center gap-2">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                Создание...
+              </span>
+            ) : (
+              "Создать группу"
+            )}
           </button>
         </Modal.Footer>
       </Modal>

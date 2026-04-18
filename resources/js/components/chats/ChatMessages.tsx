@@ -18,13 +18,18 @@ export default function ChatMessages() {
       if (message.chat_type === CHAT_TYPE.GROUP_CHATS && index === 0) {
         return false;
       }
-
       return true;
     })
     .filter((message) => message.body || message.attachments?.length > 0);
 
+  const formatDateLabel = (date: moment.Moment) => {
+    if (date.isSame(moment(), "day")) return "Сегодня";
+    if (date.isSame(moment().subtract(1, "day"), "day")) return "Вчера";
+    return date.format("D MMMM YYYY");
+  };
+
   return (
-    <div className="relative flex flex-1 flex-col gap-[3px] overflow-x-hidden">
+    <div className="relative flex flex-1 flex-col gap-1 overflow-x-hidden">
       {sortedAndFilteredMessages.map((message, index) => {
         const isFirstMessage = index === 0;
         const date = moment(message.created_at);
@@ -38,49 +43,77 @@ export default function ChatMessages() {
           (attachment) => !isImageLinkValid(attachment.original_name),
         );
 
+        const isMyMessage =
+          message.from_id === auth.id ||
+          (message.chat_type !== CHAT_TYPE.GROUP_CHATS &&
+            message.from_id !== user.id);
+
         const showProfile =
-          (message.chat_type === CHAT_TYPE.GROUP_CHATS &&
-            messages[index]?.from_id !== message.from_id) ||
-          (message.chat_type === CHAT_TYPE.GROUP_CHATS && index === 0);
+          message.chat_type === CHAT_TYPE.GROUP_CHATS &&
+          !isMyMessage &&
+          (index === 0 ||
+            sortedAndFilteredMessages[index - 1]?.from_id !== message.from_id);
+
+        const prevMessage = sortedAndFilteredMessages[index - 1];
+        const nextMessage = sortedAndFilteredMessages[index + 1];
+
+        const isFirstInGroup =
+          !prevMessage ||
+          prevMessage.from_id !== message.from_id ||
+          isDifferentDate;
+        const isLastInGroup =
+          !nextMessage ||
+          nextMessage.from_id !== message.from_id ||
+          !moment(nextMessage.created_at).isSame(date, "date");
 
         return (
           <Fragment key={`message-${message.id}`}>
             {(isFirstMessage || isDifferentDate) && (
-              <p className="p-4 text-center text-xs text-secondary-foreground sm:text-sm">
-                {date.format("DD MMMM YYYY")}
-              </p>
+              <div className="flex justify-center py-3">
+                <span className="rounded-full bg-secondary/70 px-3 py-1 text-xs font-medium text-secondary-foreground backdrop-blur-sm">
+                  {formatDateLabel(date)}
+                </span>
+              </div>
             )}
 
-            {(message.from_id === user.id && message.from_id !== auth.id) ||
-            (message.chat_type === CHAT_TYPE.GROUP_CHATS &&
-              message.from_id !== auth.id) ? (
-              <div className="flex flex-row justify-start">
-                <div className="text-sm text-foreground">
-                  {message.body && (
-                    <div className="group relative flex items-center gap-2">
-                      <div>
-                        {showProfile && (
-                          <div className="mb-1 mt-2 flex items-center gap-2">
-                            <img
-                              src={message.from.avatar}
-                              alt={message.from.name}
-                              className="h-6 w-6 rounded-full border border-secondary"
-                            />
-                            <p className="text-sm font-medium">
-                              {message.from.name}
-                            </p>
-                          </div>
-                        )}
+            {!isMyMessage ? (
+              <div
+                className={clsx(
+                  "flex justify-start",
+                  isFirstInGroup && "mt-2",
+                  !isLastInGroup && "mb-0.5",
+                )}
+              >
+                <div className="max-w-[85%] text-sm text-foreground lg:max-w-[70%]">
+                  {showProfile && (
+                    <div className="mb-1 ml-1 flex items-center gap-2">
+                      <img
+                        src={message.from.avatar}
+                        alt={message.from.name}
+                        className="h-5 w-5 rounded-full object-cover ring-1 ring-secondary"
+                      />
+                      <span className="text-xs font-semibold text-secondary-foreground">
+                        {message.from.name}
+                      </span>
+                    </div>
+                  )}
 
-                        <div className="relative flex max-w-xs flex-wrap items-end gap-2 rounded-2xl bg-secondary py-2 pl-2 pr-4 text-sm lg:max-w-md">
-                          <p
-                            dangerouslySetInnerHTML={{ __html: message.body }}
-                            className="my-auto overflow-auto"
-                          />
-                          <span className="-mt-4 ml-auto text-xs text-secondary-foreground">
-                            {date.format("H:mm")}
-                          </span>
-                        </div>
+                  {message.body && (
+                    <div className="group relative flex items-end gap-1">
+                      <div
+                        className={clsx(
+                          "relative inline-block rounded-2xl bg-secondary px-3 py-2 shadow-sm",
+                          isFirstInGroup && "rounded-tl-md",
+                          isLastInGroup && "rounded-bl-md",
+                        )}
+                      >
+                        <p
+                          dangerouslySetInnerHTML={{ __html: message.body }}
+                          className="whitespace-pre-wrap break-words"
+                        />
+                        <span className="ml-2 inline-block align-bottom text-[10px] leading-none text-secondary-foreground">
+                          {date.format("HH:mm")}
+                        </span>
                       </div>
 
                       <DeleteMessage message={message} />
@@ -88,7 +121,7 @@ export default function ChatMessages() {
                   )}
 
                   {message.body && message.attachments?.length > 0 && (
-                    <div className="my-[3px]"></div>
+                    <div className="h-1" />
                   )}
 
                   <ChatMessageAttachment
@@ -100,27 +133,33 @@ export default function ChatMessages() {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-row justify-end">
-                <div className="text-sm text-white">
+              <div
+                className={clsx(
+                  "flex justify-end",
+                  isFirstInGroup && "mt-2",
+                  !isLastInGroup && "mb-0.5",
+                )}
+              >
+                <div className="max-w-[85%] text-sm text-white lg:max-w-[70%]">
                   {message.body && (
-                    <div className="group relative flex flex-row-reverse items-center gap-2">
+                    <div className="group relative flex flex-row-reverse items-end gap-1">
                       <div
                         className={clsx(
-                          "relative flex max-w-xs flex-wrap items-end gap-2 rounded-2xl py-2 pl-4 pr-2 lg:max-w-md",
+                          "relative inline-block rounded-2xl px-3 py-2 shadow-sm",
+                          isFirstInGroup && "rounded-tr-md",
+                          isLastInGroup && "rounded-br-md",
                           !user.message_color && "bg-primary",
                         )}
                         style={{
-                          background: user.message_color
-                            ? user.message_color
-                            : "",
+                          background: user.message_color || undefined,
                         }}
                       >
                         <p
                           dangerouslySetInnerHTML={{ __html: message.body }}
-                          className="my-auto overflow-auto"
+                          className="whitespace-pre-wrap break-words"
                         />
-                        <span className="-mt-4 ml-auto text-xs text-white/80">
-                          {date.format("H:mm")}
+                        <span className="ml-2 inline-block align-bottom text-[10px] leading-none text-white/70">
+                          {date.format("HH:mm")}
                         </span>
                       </div>
 
@@ -129,7 +168,7 @@ export default function ChatMessages() {
                   )}
 
                   {message.body && message.attachments?.length > 0 && (
-                    <div className="my-[3px]"></div>
+                    <div className="h-1" />
                   )}
 
                   <ChatMessageAttachment

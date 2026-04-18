@@ -4,13 +4,28 @@ import { PropsWithChildren } from "react";
 
 export default function Guest({ children }: PropsWithChildren) {
   return (
-    <div className="flex min-h-[100dvh] min-h-[-webkit-fill-available] flex-col items-center justify-center bg-secondary pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] pt-[max(1.75rem,env(safe-area-inset-top,0px))] pb-[env(safe-area-inset-bottom,0px)]">
-      <div className="flex w-11/12 max-w-md flex-col space-y-6 overflow-hidden rounded-lg bg-background p-6 shadow-md">
-        <Link href="/" className="mx-auto w-20">
-          <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
-        </Link>
+    <div className="flex min-h-[100dvh] min-h-[-webkit-fill-available] flex-col items-center justify-center bg-gradient-to-br from-primary/5 via-background to-secondary/30 pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] pt-[max(1rem,env(safe-area-inset-top,0px))] pb-[env(safe-area-inset-bottom,0px)]">
+      <div className="w-11/12 max-w-md animate-fade-in">
+        <div className="mb-6 flex flex-col items-center">
+          <Link
+            href="/"
+            className="flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10 transition-transform hover:scale-105"
+          >
+            <ApplicationLogo className="h-14 w-14" />
+          </Link>
+          <h1 className="mt-4 text-2xl font-bold">Мессенджер</h1>
+          <p className="mt-1 text-sm text-secondary-foreground">
+            Быстрое и безопасное общение
+          </p>
+        </div>
 
-        {children}
+        <div className="overflow-hidden rounded-2xl border border-secondary/50 bg-background/80 p-6 shadow-xl backdrop-blur-sm">
+          {children}
+        </div>
+
+        <p className="mt-6 text-center text-xs text-secondary-foreground">
+          © {new Date().getFullYear()} Мессенджер. Все права защищены.
+        </p>
       </div>
     </div>
   );
