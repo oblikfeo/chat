@@ -24,7 +24,7 @@ export default function NewChatSelector() {
             onClick={openNewPrivateChat}
             className={clsx(
               "flex w-full items-center gap-4 rounded-xl p-4 text-left transition-all duration-200",
-              "bg-secondary/30 hover:bg-secondary/60 active:scale-[0.98]",
+              "bg-secondary/30 hover:bg-secondary/60 active:bg-secondary/50",
             )}
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
@@ -43,7 +43,7 @@ export default function NewChatSelector() {
             onClick={openNewGroup}
             className={clsx(
               "flex w-full items-center gap-4 rounded-xl p-4 text-left transition-all duration-200",
-              "bg-secondary/30 hover:bg-secondary/60 active:scale-[0.98]",
+              "bg-secondary/30 hover:bg-secondary/60 active:bg-secondary/50",
             )}
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success/10">

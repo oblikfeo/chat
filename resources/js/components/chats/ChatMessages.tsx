@@ -4,7 +4,7 @@ import DeleteMessage from "@/components/chats/DeleteMessage";
 import { useChatMessageContext } from "@/contexts/chat-message-context";
 import { CHAT_TYPE } from "@/types/chat";
 import { useAppContext } from "@/contexts/app-context";
-import { isImageLinkValid } from "@/utils";
+import { isChatMediaLinkValid } from "@/utils";
 import ChatMessageAttachment from "@/components/chats/ChatMessageAttachment";
 import clsx from "clsx";
 
@@ -37,10 +37,10 @@ export default function ChatMessages() {
         const isDifferentDate = !date.isSame(prevDate, "date");
 
         const messageWithImages = message.attachments.filter((attachment) =>
-          isImageLinkValid(attachment.original_name),
+          isChatMediaLinkValid(attachment.original_name),
         );
         const messageWithFiles = message.attachments.filter(
-          (attachment) => !isImageLinkValid(attachment.original_name),
+          (attachment) => !isChatMediaLinkValid(attachment.original_name),
         );
 
         const isMyMessage =

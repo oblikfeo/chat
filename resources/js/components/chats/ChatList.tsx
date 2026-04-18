@@ -68,7 +68,7 @@ export default function ChatList({ search, href, className }: ChatListProps) {
               onClick={() => handleMarkAsRead(chat)}
               className={clsx(
                 "relative flex w-full min-w-0 flex-1 items-center gap-3 rounded-xl p-3 pr-11 text-left transition-all duration-200 touch-manipulation",
-                "active:scale-[0.98] active:bg-secondary/80",
+                "active:bg-secondary/80",
                 "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-secondary/60",
                 route().current(href, chat.id) &&
                   "bg-primary/10 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-primary/15",

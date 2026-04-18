@@ -38,6 +38,17 @@ export const isImageLinkValid = (name: string | null): boolean => {
   return validExtensions.includes(extension);
 };
 
+export const isVideoLinkValid = (name: string | null): boolean => {
+  if (!name) return false;
+  const videoExtensions = ["mp4", "webm", "mov", "avi", "mkv", "m4v", "mpeg", "ogv"];
+  const extension = name.split(".").pop()?.toLowerCase() ?? "";
+  return videoExtensions.includes(extension);
+};
+
+/** Картинка или видео — показываем в сетке превью, не как «файл» */
+export const isChatMediaLinkValid = (name: string | null): boolean =>
+  isImageLinkValid(name) || isVideoLinkValid(name);
+
 export const formatFileSize = (size: number): string => {
   if (size < 1024) {
     return size.toFixed(2) + " B";
@@ -51,11 +62,11 @@ export const formatFileSize = (size: number): string => {
 };
 
 export const existingMedia = (attachments: Attachment[]) => {
-  return attachments.some((media) => isImageLinkValid(media.original_name));
+  return attachments.some((media) => isChatMediaLinkValid(media.original_name));
 };
 
 export const existingFiles = (attachments: Attachment[]) => {
-  return attachments.some((media) => !isImageLinkValid(media.original_name));
+  return attachments.some((media) => !isChatMediaLinkValid(media.original_name));
 };
 
 export const existingLinks = (links: Link[]) => {

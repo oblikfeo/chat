@@ -1,7 +1,7 @@
 import { Attachment, ChatMessage } from "@/types/chat-message";
 import clsx from "clsx";
 import DeleteSelectedFileInChat from "@/components/chats/DeleteSelectedFileInChat";
-import { formatFileSize } from "@/utils";
+import { formatFileSize, isVideoLinkValid } from "@/utils";
 import { BsFileEarmarkText } from "react-icons/bs";
 import moment from "moment";
 import DeleteMessage from "@/components/chats/DeleteMessage";
@@ -52,12 +52,23 @@ export default function ChatMessageAttachment({
                   className="group/attachment relative flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden rounded-xl p-1 transition-all hover:bg-secondary"
                   key={attachment.file_name}
                 >
-                  <img
-                    src={`${attachment.file_path}/${attachment.file_name}`}
-                    alt={attachment.original_name}
-                    className="h-full rounded-lg object-cover"
-                    onClick={() => setSelectedMedia(attachment)}
-                  />
+                  {isVideoLinkValid(attachment.original_name) ? (
+                    <video
+                      src={`${attachment.file_path}/${attachment.file_name}`}
+                      className="h-full w-full rounded-lg object-cover"
+                      muted
+                      playsInline
+                      preload="metadata"
+                      onClick={() => setSelectedMedia(attachment)}
+                    />
+                  ) : (
+                    <img
+                      src={`${attachment.file_path}/${attachment.file_name}`}
+                      alt={attachment.original_name}
+                      className="h-full rounded-lg object-cover"
+                      onClick={() => setSelectedMedia(attachment)}
+                    />
+                  )}
 
                   {message.attachments?.length > 1 && (
                     <DeleteSelectedFileInChat

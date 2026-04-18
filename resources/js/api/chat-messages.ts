@@ -16,19 +16,17 @@ export const saveMessage = ({
   message: string;
   attachments: File[];
 }): Promise<AxiosResponse<{ data: ChatMessage }>> => {
-  return window.axios.post(
-    route("chats.store"),
-    {
-      to_id: user.id,
-      body: message,
-      attachments,
-    },
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    },
-  );
+  const formData = new FormData();
+  formData.append("to_id", user.id);
+  if (message.trim().length > 0) {
+    formData.append("body", message);
+  }
+  attachments.forEach((file) => {
+    formData.append("attachments[]", file);
+  });
+
+  // Не задаём Content-Type вручную — axios подставит multipart с boundary (иначе Laravel не видит файлы).
+  return window.axios.post(route("chats.store"), formData);
 };
 
 export const deleteMessage = (

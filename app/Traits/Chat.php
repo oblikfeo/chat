@@ -13,7 +13,8 @@ use Illuminate\Database\Query\JoinClause;
 
 trait Chat
 {
-    protected $validImageExtensions = ["jpg", "jpeg", "png", "gif", "svg", "bmp", "webp"];
+    /** Расширения, которые считаем «медиа» (превью в чате), включая видео */
+    protected $validImageExtensions = ["jpg", "jpeg", "png", "gif", "svg", "bmp", "webp", "mp4", "webm", "mov", "avi", "mkv", "m4v"];
     protected $linkPattern = "/(https?:\/\/[^\s]+)/";
 
     public function chats() 

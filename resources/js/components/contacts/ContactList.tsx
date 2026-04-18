@@ -47,7 +47,7 @@ export default function ContactList() {
                   href={route("chats.show", contact.id)}
                   className={clsx(
                     "relative flex w-full min-w-0 flex-1 items-center gap-3 rounded-xl p-3 pr-11 text-left transition-all duration-200 touch-manipulation",
-                    "active:scale-[0.98] active:bg-secondary/80",
+                    "active:bg-secondary/80",
                     "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-secondary/60",
                     contact.is_contact_blocked && "opacity-40 grayscale",
                   )}
@@ -92,7 +92,7 @@ export default function ContactList() {
                   href={route("chats.show", contact.id)}
                   className={clsx(
                     "relative flex w-full min-w-0 flex-1 items-center gap-3 rounded-xl p-3 pr-11 text-left transition-all duration-200 touch-manipulation",
-                    "active:scale-[0.98] active:bg-secondary/80",
+                    "active:bg-secondary/80",
                     "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-secondary/60",
                     contact.is_contact_blocked && "opacity-40 grayscale",
                   )}

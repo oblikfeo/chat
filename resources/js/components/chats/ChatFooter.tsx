@@ -316,7 +316,7 @@ export default function ChatFooter({
         <textarea
           placeholder="Сообщение..."
           className={clsx(
-            "max-h-[120px] w-full resize-none rounded-2xl border-0 bg-secondary/50 py-2.5 pl-4 pr-11 text-sm",
+            "max-h-[120px] w-full resize-none rounded-2xl border-0 bg-secondary/50 py-2.5 pl-4 pr-11 text-base md:text-sm",
             "placeholder-secondary-foreground transition-all duration-200",
             "focus:bg-secondary/70 focus:outline-none focus:ring-2 focus:ring-primary/20",
           )}

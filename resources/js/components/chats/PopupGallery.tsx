@@ -6,6 +6,7 @@ import { BsXLg } from "react-icons/bs";
 import { FaCircleNotch } from "react-icons/fa";
 import ImageGallery from "react-image-gallery";
 import ReactImageGallery from "react-image-gallery";
+import { isVideoLinkValid } from "@/utils";
 
 export default function PopupGallery() {
   const { media, selectedMedia, setSelectedMedia, clearSelectedMedia } =
@@ -120,9 +121,28 @@ export default function PopupGallery() {
               items={media
                 .sort((a, b) => a.created_at.localeCompare(b.created_at))
                 .map((image) => {
+                  const src = `${image.file_path}/${image.file_name}`;
+                  const video = isVideoLinkValid(image.original_name);
                   return {
-                    thumbnail: `${image.file_path}/${image.file_name}`,
-                    original: `${image.file_path}/${image.file_name}`,
+                    thumbnail: src,
+                    original: src,
+                    renderItem: () =>
+                      video ? (
+                        <video
+                          src={src}
+                          controls
+                          playsInline
+                          className="max-h-[85vh] max-w-full object-contain"
+                          onLoadedData={() => setIsLoading(false)}
+                        />
+                      ) : (
+                        <img
+                          src={src}
+                          alt={image.original_name}
+                          className="max-h-[85vh] max-w-full object-contain"
+                          onLoad={() => setIsLoading(false)}
+                        />
+                      ),
                   };
                 })}
               onImageLoad={() => setIsLoading(false)}

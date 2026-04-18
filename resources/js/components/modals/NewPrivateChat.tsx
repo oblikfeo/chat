@@ -101,7 +101,7 @@ export default function NewPrivateChat() {
                   <button
                     key={user.id}
                     onClick={() => startChat(user)}
-                    className="flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all duration-200 hover:bg-secondary/60 active:scale-[0.98]"
+                    className="flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all duration-200 hover:bg-secondary/60 active:bg-secondary/80"
                   >
                     <div className="relative">
                       <img
